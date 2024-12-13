@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicampos - Perfil</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        header img {
+            height: 50px;
+        }
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .profile-details {
+            margin-top: 20px;
+            line-height: 1.8;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .profile-details img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid #4CAF50;
+        }
+        .profile-details div {
+            flex: 1;
+        }
+        .profile-details p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .profile-details strong {
+            color: #333;
+        }
+        .profile-description {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #666;
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .actions a {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .actions a:hover {
+            background-color: #45a049;
+        }
+        .solicitacoes {
+            margin-top: 30px;
+        }
+        .solicitacoes h3 {
+            color: #4CAF50;
+        }
+        .solicitacoes ul {
+            list-style: none;
+            padding: 0;
+        }
+        .solicitacoes li {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+        .solicitacoes li strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Servicampos</h1>
+        <img src="/static/logo.png" alt="Logo do Servicampos">
+    </header>
+    <main>
+        <h2>Meu Perfil</h2>
+        <div class="profile-details">
+            <img src="{{ perfil.foto.url }}" alt="Foto de Perfil">
+            <div>
+                <p><strong>Nome:</strong> {{ perfil.user.username }}</p>
+                <p><strong>Tipos de Serviços Prestados:</strong> {{ perfil.funcao }}</p>
+                <p><strong>Contato:</strong> {{ perfil.contato }}</p>
+                <p><strong>Cidade:</strong> {{ perfil.cidade }}</p>
+            </div>
+        </div>
+        <div class="profile-description">
+            <strong>Descrição:</strong>
+            <p>{{ perfil.descricao }}</p>
+        </div>
+        <div class="solicitacoes">
+            <h3>Solicitações Enviadas</h3>
+            {% if solicitacoes_enviadas %}
+                <ul>
+                    {% for solicitacao in solicitacoes_enviadas %}
+                        <li>
+                            <strong>Para:</strong> 
+                            <a href="{% url 'perfil_detalhado' perfil_id=solicitacao.prestador.perfil.id %}">
+                                {{ solicitacao.prestador.username }}
+                            </a><br>
+                            <strong>Mensagem:</strong> {{ solicitacao.mensagem }}<br>
+                            <strong>Data:</strong> {{ solicitacao.data|date:"d/m/Y H:i" }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Você não enviou solicitações ainda.</p>
+            {% endif %}
+        </div>
+        <div class="avaliacoes-recebidas">
+            <h3>Avaliações Recebidas</h3>
+            {% if avaliacoes %}
+                <ul>
+                    {% for nota in avaliacoes %}
+                        <li>
+                            <strong>Nota:</strong> {{ nota }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Este usuário ainda não recebeu avaliações.</p>
+            {% endif %}
+        </div>
+        
+        <div class="solicitacoes">
+            <h3>Solicitações Recebidas</h3>
+            {% if solicitacoes_recebidas %}
+                <ul>
+                    {% for solicitacao in solicitacoes_recebidas %}
+                        <li>
+                            <strong>De:</strong> 
+                            <a href="{% url 'perfil_detalhado' perfil_id=solicitacao.cliente.perfil.id %}">
+                                {{ solicitacao.cliente.username }}
+                            </a><br>
+                            <strong>Mensagem:</strong> {{ solicitacao.mensagem }}<br>
+                            <strong>Data:</strong> {{ solicitacao.data|date:"d/m/Y H:i" }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Você não recebeu solicitações ainda.</p>
+            {% endif %}
+        </div>
+        <div class="actions">
+            <a href="{% url 'editar_perfil' %}">Editar Perfil</a>
+            <a href="{% url 'buscar_usuarios' %}">Buscar Serviços</a>
+            <a href="{% url 'usuarios_home' %}">Voltar para a Home</a>
+        </div>
+    </main>
+</body>
+</html>

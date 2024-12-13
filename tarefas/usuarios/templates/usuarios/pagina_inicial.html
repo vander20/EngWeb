@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicampos - Bem-vindo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        header img {
+            height: 80px;
+            margin-right: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 80vh;
+            background-image: url('{% static "usuarios/images/home_image.jpeg" %}');
+            background-size: cover;
+            background-position: center;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .container p {
+            font-size: 1.2rem;
+            color: #f9f9f9;
+            margin-bottom: 30px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        .buttons a {
+            display: inline-block;
+            width: 200px;
+            text-align: center;
+            padding: 10px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .buttons a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="{% static 'usuarios/images/logo.png' %}" alt="Logo do Servicampos">
+        <h1>Servicampos</h1>
+    </header>
+    <div class="container">
+        <h1>Bem-vindo ao Servicampos</h1>
+        <p>Servicampos é uma plataforma criada para facilitar a busca por profissionais que oferecem serviços para atender às suas necessidades.</p>
+        <div class="buttons">
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'registro' %}">Cadastrar</a>
+        </div>
+    </div>
+</body>
+</html>

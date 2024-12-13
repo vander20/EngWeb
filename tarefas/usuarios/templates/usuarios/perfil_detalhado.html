@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicampos - Perfil Detalhado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        header img {
+            height: 50px;
+        }
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .profile-image {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-image img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #4CAF50;
+        }
+        .profile-details {
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+        .profile-details p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .profile-details strong {
+            color: #333;
+        }
+        .profile-description {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #666;
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .form-section {
+            margin-top: 30px;
+        }
+        .form-section h3 {
+            color: #4CAF50;
+        }
+        .form-section form textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+            margin-bottom: 15px;
+        }
+        .form-section form button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-section form button:hover {
+            background-color: #45a049;
+        }
+        .actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .actions a {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .actions a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Servicampos</h1>
+        <img src="logo.png" alt="Logo do Servicampos"> <!-- Substitua pelo caminho da sua logo -->
+    </header>
+    <main>
+        <h2>Perfil Detalhado</h2>
+        <div class="profile-image">
+            <img src="{{ perfil.foto.url }}" alt="Foto de Perfil"> <!-- Foto de perfil -->
+        </div>
+        <div class="profile-details">
+            <p><strong>Nome:</strong> {{ perfil.user.username }}</p>
+            <p><strong>Tipos de Serviços Prestados:</strong> {{ perfil.funcao }}</p>
+            <p><strong>Contato:</strong> {{ perfil.contato }}</p>
+            <p><strong>Cidade:</strong> {{ perfil.cidade }}</p>
+        </div>
+        <div class="profile-description">
+            <strong>Descrição:</strong>
+            <p>{{ perfil.descricao }}</p>
+        </div>
+
+        <!-- Formulário de Solicitação -->
+        <div class="form-section">
+            <h3>Enviar Solicitação de Serviço</h3>
+            <form method="POST" action="{% url 'enviar_solicitacao' perfil.id %}">
+                {% csrf_token %}
+                <textarea name="mensagem" rows="4" placeholder="Escreva aqui sua solicitação..." required></textarea>
+                <button type="submit">Enviar Solicitação</button>
+            </form>
+        </div>
+
+        <!-- Formulário de Avaliação -->
+        <div class="form-section">
+            <h3>Deixar uma Avaliação</h3>
+            <form method="POST" action="{% url 'deixar_avaliacao' perfil.id %}">
+                {% csrf_token %}
+                <textarea name="avaliacao" rows="4" placeholder="Escreva sua avaliação..." required></textarea>
+                <button type="submit">Enviar Avaliação</button>
+            </form>
+        </div>
+
+        <div class="avaliacoes-recebidas">
+            <h3>Avaliações Recebidas</h3>
+            {% if notas %}
+                <ul>
+                    {% for nota in notas %}
+                        <li>Nota: {{ nota }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Este prestador ainda não recebeu avaliações.</p>
+            {% endif %}
+        </div>
+        
+
+        <div class="actions">
+            <a href="{% url 'buscar_usuarios' %}">Voltar para a Busca</a>
+            <a href="{% url 'usuarios_home' %}">Voltar para a Home</a>
+        </div>
+    </main>
+</body>
+</html>
